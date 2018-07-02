@@ -9,7 +9,7 @@ class BooksApp extends React.Component {
     return(
       <div>
         <ListBooks/>
-        <SearchBooks/>
+        {/*<SearchBooks/>*/}
       </div>
     )
   }

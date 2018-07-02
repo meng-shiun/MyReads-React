@@ -3,10 +3,10 @@ import Book from './Book'
 
 const BooksGrid = (props) => {
   return (
-    <div>
-      * BooksGrid
+    <ol className='books-grid'>
       <Book/>
-    </div>
+      <Book/>
+    </ol>
   )
 }
 
