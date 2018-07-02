@@ -1,57 +1,34 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 
 class ListBooks extends React.Component {
 
   state = {
     // shelf: 'currentlyReading' // currentlyReading, wantToRead, read
-    allBooks: [],
-    recentBooks: [],
-    wantToReadBooks: [],
-    readBooks: []
   }
 
   componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      books.map(book => {
-        if (book.shelf === 'currentlyReading') {
-          this.setState((state) => ({
-            recentBooks: state.recentBooks.concat({
-              "id": book.id,
-              "title": book.title,
-              "authors": book.authors,
-              "cover": book.imageLinks.smallThumbnail
-            })
-          }))
-        }
-
-        if (book.shelf === 'wantToRead') {
-          this.setState((state) => ({
-            wantToReadBooks: state.wantToReadBooks.concat({
-              "id": book.id,
-              "title": book.title,
-              "authors": book.authors,
-              "cover": book.imageLinks.smallThumbnail
-            })
-          }))
-        }
-
-        if (book.shelf === 'read') {
-          this.setState((state) => ({
-            readBooks: state.readBooks.concat({
-              "id": book.id,
-              "title": book.title,
-              "authors": book.authors,
-              "cover": book.imageLinks.smallThumbnail
-            })
-          }))
-        }
-      })
-    })
+    // TODO: When moving book to another shelf, update BookShelf
   }
 
+
   render() {
+    const currentlyReadingBooks = []
+    const wantToReadBooks = []
+    const readBooks = []
+
+    this.props.books.forEach(book => {
+      if (book.shelf === 'currentlyReading') {
+        currentlyReadingBooks.push(book)
+      }
+      if (book.shelf === 'wantToRead') {
+        wantToReadBooks.push(book)
+      }
+      if (book.shelf === 'read') {
+        readBooks.push(book)
+      }
+    })
+
     return (
       <div>
         <div className='list-books'>
@@ -61,9 +38,9 @@ class ListBooks extends React.Component {
           </div>
 
           <div className='list-books-content'>
-            <BookShelf title='Currently Reading' books={this.state.recentBooks}/>
-            <BookShelf title='Want to Read' books={this.state.wantToReadBooks}/>
-            <BookShelf title='Read' books={this.state.readBooks}/>
+            <BookShelf title='Currently Reading' books={currentlyReadingBooks}/>
+            <BookShelf title='Want to Read' books={wantToReadBooks}/>
+            <BookShelf title='Read' books={readBooks}/>
           </div>
 
           <div className='open-search'>
