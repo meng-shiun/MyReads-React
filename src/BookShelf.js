@@ -18,7 +18,7 @@ class BookShelf extends React.Component {
         </div>
       </div>
     )
-  }  
+  }
 }
 
 export default BookShelf
