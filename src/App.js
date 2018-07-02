@@ -5,11 +5,20 @@ import SearchBooks from './SearchBooks'
 import './App.css'
 
 class BooksApp extends React.Component {
+  state = {
+    screen: 'main' //main, search
+  }
+
   render() {
     return(
       <div>
-        <ListBooks/>
-        {/*<SearchBooks/>*/}
+        {this.state.screen === 'main' && (
+          <ListBooks/>
+        )}
+
+        {this.state.screen === 'search' && (
+          <SearchBooks/>
+        )}
       </div>
     )
   }
