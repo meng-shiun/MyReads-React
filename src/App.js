@@ -6,8 +6,10 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    screen: 'main', //main, search
-    allBooks: []
+    screen: 'search', //main, search
+    query: '',
+    allBooks: [],
+    allSearchResults: []
   }
 
   componentDidMount() {
@@ -20,22 +22,50 @@ class BooksApp extends React.Component {
     })
   }
 
-  updateBookShelf = (book, shelf) => {
-    console.log('[ListBooks] move', book.title, 'to:', shelf)
+  searchBooks = (e) => {
+    BooksAPI.search('Art').then( books => {
+      this.setState({allSearchResults: books})
+    })
+  }
+
+  changeShelfMainPage = (book, shelf) => {
     BooksAPI.update(book, shelf).then(() => this.showAllBooks())
   }
 
+  changeShelfSearchPage = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+  }
+
   render() {
-    console.log(this.state.allBooks);
+    // TODO: clean up code for results[]
+    const results = this.state.allSearchResults
+    const booksInShelf = this.state.allBooks
+
+    results.forEach( result => {
+      booksInShelf.forEach( book => {
+        if (book.id === result.id) {
+          result.shelf = book.shelf
+        }
+      })
+    })
+
     return(
       <div>
         {this.state.screen === 'main' && (
-          <ListBooks books={this.state.allBooks} handleShelfChange={this.updateBookShelf}/>
-          // <ListBooks/>
+          <ListBooks
+            books={this.state.allBooks}
+            handleShelfChange={this.changeShelfMainPage}
+          />
         )}
 
         {this.state.screen === 'search' && (
-          <SearchBooks/>
+          <SearchBooks
+            books={this.state.allBooks}
+            result={results}
+            getQuery={this.state.query}
+            searchBooks={this.searchBooks}
+            handleShelfChange={this.changeShelfSearchPage}
+          />
         )}
       </div>
     )
