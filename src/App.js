@@ -6,7 +6,7 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    screen: 'main', //main, search
+    screen: 'search', //main, search
   }
 
   render() {
