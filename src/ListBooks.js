@@ -1,23 +1,34 @@
 import React from 'react'
+import * as BooksAPI from './BooksAPI'
 import BookShelf from './BookShelf'
 
 class ListBooks extends React.Component {
 
   state = {
-    // shelf: 'currentlyReading' // currentlyReading, wantToRead, read
+    allBooks: []
   }
 
   componentDidMount() {
-    // TODO: When moving book to another shelf, update BookShelf
+    this.showAllBooks()
   }
 
+  showAllBooks = () => {
+    BooksAPI.getAll().then(books => {
+      this.setState({ allBooks: books })
+    })
+  }
+
+  updateBookShelf = (book, shelf) => {
+    console.log('[ListBooks] move', book.title, 'to:', shelf)
+    BooksAPI.update(book, shelf).then(() => this.showAllBooks())
+  }
 
   render() {
     const currentlyReadingBooks = []
     const wantToReadBooks = []
     const readBooks = []
 
-    this.props.books.forEach(book => {
+    this.state.allBooks.forEach(book => {
       if (book.shelf === 'currentlyReading') {
         currentlyReadingBooks.push(book)
       }
@@ -38,9 +49,9 @@ class ListBooks extends React.Component {
           </div>
 
           <div className='list-books-content'>
-            <BookShelf title='Currently Reading' books={currentlyReadingBooks}/>
-            <BookShelf title='Want to Read' books={wantToReadBooks}/>
-            <BookShelf title='Read' books={readBooks}/>
+            <BookShelf title='Currently Reading' books={currentlyReadingBooks} onShelfChange={this.updateBookShelf}/>
+            <BookShelf title='Want to Read' books={wantToReadBooks} onShelfChange={this.updateBookShelf}/>
+            <BookShelf title='Read' books={readBooks} onShelfChange={this.updateBookShelf}/>
           </div>
 
           <div className='open-search'>

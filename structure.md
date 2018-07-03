@@ -1,16 +1,16 @@
-* ListBooks
-  * (ListBooksTitle)
-  * (OpenSearch)
-  * (ListBooksContent)
-    * BookShelf
-      * (BookshelfTitle)
-      * BooksGrid
-        * Book
+* App
+  * ListBooks - BooksAPI, state
+    * (ListBooksTitle)
+    * (OpenSearch)
+    * (ListBooksContent)
+      * BookShelf
+        * (BookshelfTitle)
+          * Book
 
-* SearchBooks
-  * (SearchBooksBar)
-    * (SearchBooksInput)
-    * (CloseSearch)
-  * (SearchBooksResult)
-    * BooksGrid (reused)
-      * Book (reused)
+  * SearchBooks - BooksAPI, state
+    * (SearchBooksBar)
+      * (SearchBooksInput)
+      * (CloseSearch)
+      * (SearchBooksResult)
+      * BooksGrid (reused)
+        * Book (reused)
