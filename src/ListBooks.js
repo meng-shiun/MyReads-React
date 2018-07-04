@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import BookShelf from './BookShelf'
 
 const ListBooks = (props) => {
@@ -33,7 +34,7 @@ const ListBooks = (props) => {
             <BookShelf title='Read' books={readBooks} onShelfChange={handleShelfChange}/>
           </div>
           <div className='open-search'>
-            <a>Add a book</a>
+            <Link to="/search">Add a book</Link>
           </div>
         </div>
       </div>
