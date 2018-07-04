@@ -34,7 +34,7 @@ const ListBooks = (props) => {
             <BookShelf title='Read' books={readBooks} onShelfChange={handleShelfChange}/>
           </div>
           <div className='open-search'>
-            <Link to="/search">Add a book</Link>
+            <Link to='/search'>Add a book</Link>
           </div>
         </div>
       </div>
