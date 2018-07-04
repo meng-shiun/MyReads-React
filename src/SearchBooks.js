@@ -20,6 +20,7 @@ class SearchBooks extends React.Component {
 
           <div className='search-books-results'>
             <ol className='books-grid'>
+              {/*TODO: update book selected option when change bookShelf on search page*/}
                 {this.props.result.map(book => (
                   <Book
                     key={book.id}

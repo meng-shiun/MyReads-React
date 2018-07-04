@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 class Book extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    cover: PropTypes.string.isRequired
+    cover: PropTypes.string.isRequired,
+    onShelfChange: PropTypes.func.isRequired
   }
 
   handleChange = (e) => {
