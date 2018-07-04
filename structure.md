@@ -1,14 +1,14 @@
-* App
-  * ListBooks - BooksAPI, state
+* App - BooksAPI, state
+  * ListBooks
     * (ListBooksTitle)
     * (OpenSearch)
     * (ListBooksContent)
       * BookShelf
         * (BookshelfTitle)
         * BooksGrid (reused)
-          * Book
+          * Book (reused)
 
-  * SearchBooks - BooksAPI, state
+  * SearchBooks
     * (SearchBooksBar)
       * (SearchBooksInput)
       * (CloseSearch)

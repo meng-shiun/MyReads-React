@@ -7,7 +7,7 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    query: '', // Astronomy, Art, Drama, Design, Cook, Games
+    query: '', // Astronomy, Art, Drama, Design, Cook, Games, poetry, biography
     allBooks: [], // All books in Main Page
     allSearchResults: [] // All books in Search Page
   }
@@ -17,19 +17,19 @@ class BooksApp extends React.Component {
   }
 
   showAllBooks = () => {
-    BooksAPI.getAll().then( books => {
-      this.setState({ allBooks: books })
-    })
+    BooksAPI.getAll()
+    .then(this.correctThumbnailAndAuthor)
+    .then( books => this.setState({ allBooks: books }))
   }
 
   handleSearchTextChange = (searchText) => {
-    console.log(searchText);
     this.setState({query: searchText})
     this.showSearchResults(searchText)
   }
 
   showSearchResults = (searchText) => {
     BooksAPI.search(searchText)
+    .then(this.correctThumbnailAndAuthor)
     .then(this.addShelfPropToExistedBooks)
     .then( results => this.setState({allSearchResults: results}) )
     .catch( () => this.setState({allSearchResults: []}) )
@@ -37,6 +37,22 @@ class BooksApp extends React.Component {
 
   changeShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then(() => this.showAllBooks())
+  }
+
+  correctThumbnailAndAuthor = (books) => {
+    return new Promise(resolve => {
+      books.map(book => {
+        if (!book.imageLinks) {
+          book.imageLinks = []
+          book.imageLinks.thumbnail = ''
+        }
+        if (!book.authors) {
+          book.authors = []
+        }
+        return books
+      })
+      resolve(books)
+    })
   }
 
   addShelfPropToExistedBooks = (results) => {
