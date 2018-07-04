@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Book from './Book'
+import BooksGrid from './BooksGrid'
 
 class SearchBooks extends React.Component {
 
   render() {
+    const { books, getQuery, searchBooks, handleShelfChange } = this.props
+
     return (
       <div className='search-books'>
         <div className='search-books-bar'>
@@ -15,26 +17,12 @@ class SearchBooks extends React.Component {
               You can find these search terms here:
               https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
               */}
-              <input type='text' placeholder='Search by title or author' value={this.props.getQuery} onChange={this.props.searchBooks}></input>
+              <input type='text' placeholder='Search by title or author' value={getQuery} onChange={searchBooks}></input>
             </div>
           </div>
-
           <div className='search-books-results'>
-            <ol className='books-grid'>
-              {/*TODO: update book selected option when change bookShelf on search page*/}
-                {this.props.result.map(book => (
-                  <Book
-                    key={book.id}
-                    id={book.id}
-                    title={book.title}
-                    authors={book.authors}
-                    cover={book.imageLinks.thumbnail}
-                    shelf={book.shelf}
-                    onShelfChange={this.props.handleShelfChange}
-                    />
-                ))}
-              </ol>
-            </div>
+            <BooksGrid books={books} onShelfChange={handleShelfChange}/>
+          </div>
           </div>
         )
       }

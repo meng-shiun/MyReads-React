@@ -5,6 +5,7 @@
     * (ListBooksContent)
       * BookShelf
         * (BookshelfTitle)
+        * BooksGrid (reused)
           * Book
 
   * SearchBooks - BooksAPI, state

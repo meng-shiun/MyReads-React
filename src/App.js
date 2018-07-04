@@ -7,9 +7,9 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    query: '',
-    allBooks: [],
-    allSearchResults: []
+    query: '', // Astronomy, Art, Drama, Design, Cook, Games
+    allBooks: [], // All books in Main Page
+    allSearchResults: [] // All books in Search Page
   }
 
   componentDidMount() {
@@ -23,27 +23,26 @@ class BooksApp extends React.Component {
   }
 
   searchBooks = (e) => {
-    BooksAPI.search('Art').then( books => {
-      this.setState({allSearchResults: books})
-    })
+    BooksAPI.search('Art')
+      .then( this.addShelfPropToExistedBooks )
+      .then( results => this.setState({allSearchResults: results}) )
   }
 
-  changeShelfMainPage = (book, shelf) => {
+  changeShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then(() => this.showAllBooks())
-  }
-
-  changeShelfSearchPage = (book, shelf) => {
-    BooksAPI.update(book, shelf)
   }
 
   addShelfPropToExistedBooks = (results) => {
     const booksInShelf = this.state.allBooks
-    results.forEach( result => {
-      booksInShelf.forEach( book => {
-        (book.id === result.id) && (result.shelf = book.shelf)
+
+    return new Promise( resolve => {
+      results.forEach( result => {
+        booksInShelf.forEach( book => {
+          (book.id === result.id) && (result.shelf = book.shelf)
+        })
       })
+      resolve(results)
     })
-    return results
   }
 
   render() {
@@ -52,17 +51,16 @@ class BooksApp extends React.Component {
         <Route exact path='/' render={() => (
           <ListBooks
             books={this.state.allBooks}
-            handleShelfChange={this.changeShelfMainPage}
+            handleShelfChange={this.changeShelf}
           />
         )}/>
 
       <Route path='/search' render={() => (
         <SearchBooks
-          books={this.state.allBooks}
-          result={this.addShelfPropToExistedBooks(this.state.allSearchResults)}
-          getQuery={this.state.query}
+          books={this.state.allSearchResults}
+          getQuery='Art'
           searchBooks={this.searchBooks}
-          handleShelfChange={this.changeShelfSearchPage}
+          handleShelfChange={this.changeShelf}
         />
       )}/>
       </div>
