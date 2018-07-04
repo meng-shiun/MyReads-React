@@ -22,10 +22,17 @@ class BooksApp extends React.Component {
     })
   }
 
-  searchBooks = (e) => {
-    BooksAPI.search('Art')
-      .then( this.addShelfPropToExistedBooks )
-      .then( results => this.setState({allSearchResults: results}) )
+  handleSearchTextChange = (searchText) => {
+    console.log(searchText);
+    this.setState({query: searchText})
+    this.showSearchResults(searchText)
+  }
+
+  showSearchResults = (searchText) => {
+    BooksAPI.search(searchText)
+    .then(this.addShelfPropToExistedBooks)
+    .then( results => this.setState({allSearchResults: results}) )
+    .catch( () => this.setState({allSearchResults: []}) )
   }
 
   changeShelf = (book, shelf) => {
@@ -34,14 +41,17 @@ class BooksApp extends React.Component {
 
   addShelfPropToExistedBooks = (results) => {
     const booksInShelf = this.state.allBooks
-
-    return new Promise( resolve => {
-      results.forEach( result => {
-        booksInShelf.forEach( book => {
-          (book.id === result.id) && (result.shelf = book.shelf)
+    return new Promise( (resolve, reject) => {
+      if (results.length > 0) {
+        results.forEach( result => {
+          booksInShelf.forEach( book => {
+            (book.id === result.id) && (result.shelf = book.shelf)
+          })
         })
-      })
-      resolve(results)
+        resolve(results)
+      }
+      this.setState({allSearchResults: []})
+      reject()
     })
   }
 
@@ -49,23 +59,23 @@ class BooksApp extends React.Component {
     return(
       <div>
         <Route exact path='/' render={() => (
-          <ListBooks
-            books={this.state.allBooks}
-            handleShelfChange={this.changeShelf}
-          />
-        )}/>
+            <ListBooks
+              books={this.state.allBooks}
+              handleShelfChange={this.changeShelf}
+              />
+          )}/>
 
-      <Route path='/search' render={() => (
-        <SearchBooks
-          books={this.state.allSearchResults}
-          getQuery='Art'
-          searchBooks={this.searchBooks}
-          handleShelfChange={this.changeShelf}
-        />
-      )}/>
-      </div>
-    )
-  }
-}
+          <Route path='/search' render={() => (
+              <SearchBooks
+                books={this.state.allSearchResults}
+                handleShelfChange={this.changeShelf}
+                searchText={this.state.query}
+                onSearchTextChange={this.handleSearchTextChange}
+                />
+            )}/>
+          </div>
+        )
+      }
+    }
 
-export default BooksApp
+    export default BooksApp
