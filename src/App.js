@@ -17,7 +17,7 @@ class BooksApp extends React.Component {
   }
 
   showAllBooks = () => {
-    BooksAPI.getAll().then(books => {
+    BooksAPI.getAll().then( books => {
       this.setState({ allBooks: books })
     })
   }
@@ -36,36 +36,34 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf)
   }
 
-  render() {
-    // TODO: clean up code for results[]
-    const results = this.state.allSearchResults
+  addShelfPropToExistedBooks = (results) => {
     const booksInShelf = this.state.allBooks
-
     results.forEach( result => {
       booksInShelf.forEach( book => {
-        if (book.id === result.id) {
-          result.shelf = book.shelf
-        }
+        (book.id === result.id) && (result.shelf = book.shelf)
       })
     })
+    return results
+  }
 
+  render() {
     return(
       <div>
         {this.state.screen === 'main' && (
           <ListBooks
             books={this.state.allBooks}
             handleShelfChange={this.changeShelfMainPage}
-          />
+            />
         )}
 
         {this.state.screen === 'search' && (
           <SearchBooks
             books={this.state.allBooks}
-            result={results}
+            result={this.addShelfPropToExistedBooks(this.state.allSearchResults)}
             getQuery={this.state.query}
             searchBooks={this.searchBooks}
             handleShelfChange={this.changeShelfSearchPage}
-          />
+            />
         )}
       </div>
     )
