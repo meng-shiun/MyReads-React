@@ -1,4 +1,5 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
@@ -6,7 +7,6 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    screen: 'main', //main, search
     query: '',
     allBooks: [],
     allSearchResults: []
@@ -49,22 +49,22 @@ class BooksApp extends React.Component {
   render() {
     return(
       <div>
-        {this.state.screen === 'main' && (
+        <Route exact path='/' render={() => (
           <ListBooks
             books={this.state.allBooks}
             handleShelfChange={this.changeShelfMainPage}
-            />
-        )}
+          />
+        )}/>
 
-        {this.state.screen === 'search' && (
-          <SearchBooks
-            books={this.state.allBooks}
-            result={this.addShelfPropToExistedBooks(this.state.allSearchResults)}
-            getQuery={this.state.query}
-            searchBooks={this.searchBooks}
-            handleShelfChange={this.changeShelfSearchPage}
-            />
-        )}
+      <Route path='/search' render={() => (
+        <SearchBooks
+          books={this.state.allBooks}
+          result={this.addShelfPropToExistedBooks(this.state.allSearchResults)}
+          getQuery={this.state.query}
+          searchBooks={this.searchBooks}
+          handleShelfChange={this.changeShelfSearchPage}
+        />
+      )}/>
       </div>
     )
   }
