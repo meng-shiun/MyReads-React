@@ -26,11 +26,11 @@ class SearchBooks extends React.Component {
       </div>
       <div className='search-books-results'>
         {(searchText && books.length === 0) && (
-          <b>No match result</b>
+          <div className='search-books-info'>No match result</div>
         )}
 
         {(searchText && books.length > 0) && (
-          <b>Found {books.length} results</b>
+          <div className='search-books-info'>Found {books.length} results</div>
         )}
 
         {searchText && (

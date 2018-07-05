@@ -17,10 +17,10 @@ class Book extends React.Component {
 
     return (
       <li>
-        {(shelf && currentPage === 'search') && (
-          <span>In bookshelf: {shelf}</span>
-        )}
         <div className="book">
+          {(shelf && currentPage === 'search') && (
+            <span className="book-tag">In BookShelf</span>
+          )}
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${cover})` }}></div>
             <div className="book-shelf-changer">
