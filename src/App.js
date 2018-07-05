@@ -17,7 +17,7 @@ class BooksApp extends React.Component {
   }
 
   clearQuery = () => {
-    this.setState({query: ''})
+    this.setState({query: '', allSearchResults: []})
   }
 
   showAllBooks = () => {
