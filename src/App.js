@@ -16,6 +16,10 @@ class BooksApp extends React.Component {
     this.showAllBooks()
   }
 
+  clearQuery = () => {
+    this.setState({query: ''})
+  }
+
   showAllBooks = () => {
     BooksAPI.getAll()
       .then(this.correctThumbnailAndAuthor)
@@ -76,6 +80,7 @@ class BooksApp extends React.Component {
             <ListBooks
               books={this.state.allBooks}
               handleShelfChange={this.changeShelf}
+              onVisitSearchPage={this.clearQuery}
               />
           )}/>
 

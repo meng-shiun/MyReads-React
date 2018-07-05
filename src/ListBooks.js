@@ -8,7 +8,7 @@ const ListBooks = (props) => {
     const wantToReadBooks = []
     const readBooks = []
 
-    const { books, handleShelfChange } = props
+    const { books, handleShelfChange, onVisitSearchPage } = props
 
     books.forEach(book => {
       if (book.shelf === 'currentlyReading') {
@@ -29,12 +29,24 @@ const ListBooks = (props) => {
             <h1>MyReads</h1>
           </div>
           <div className='list-books-content'>
-            <BookShelf title='Currently Reading' books={currentlyReadingBooks} onShelfChange={handleShelfChange}/>
-            <BookShelf title='Want to Read' books={wantToReadBooks} onShelfChange={handleShelfChange}/>
-            <BookShelf title='Read' books={readBooks} onShelfChange={handleShelfChange}/>
+            <BookShelf
+              title='Currently Reading'
+              books={currentlyReadingBooks}
+              onShelfChange={handleShelfChange}
+            />
+            <BookShelf
+              title='Want to Read'
+              books={wantToReadBooks}
+              onShelfChange={handleShelfChange}
+            />
+            <BookShelf
+              title='Read'
+              books={readBooks}
+              onShelfChange={handleShelfChange}
+            />
           </div>
           <div className='open-search'>
-            <Link to='/search'>Add a book</Link>
+            <Link to='/search' onClick={onVisitSearchPage}>Add a book</Link>
           </div>
         </div>
       </div>
