@@ -25,7 +25,17 @@ class SearchBooks extends React.Component {
         </div>
       </div>
       <div className='search-books-results'>
-        <BooksGrid books={books} onShelfChange={handleShelfChange}/>
+        {(searchText && books.length === 0) && (
+          <b>No match result</b>
+        )}
+
+        {(searchText && books.length > 0) && (
+          <b>Found {books.length} results</b>
+        )}
+
+        {searchText && (
+          <BooksGrid books={books} onShelfChange={handleShelfChange}/>
+        )}
       </div>
     </div>)
   }

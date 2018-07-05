@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import {Route} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
@@ -7,7 +7,7 @@ import './App.css'
 
 class BooksApp extends React.Component {
   state = {
-    query: '', // Astronomy, Art, Drama, Design, Cook, Games, poetry, biography
+    query: '',
     allBooks: [], // All books in Main Page
     allSearchResults: [] // All books in Search Page
   }
@@ -18,30 +18,31 @@ class BooksApp extends React.Component {
 
   showAllBooks = () => {
     BooksAPI.getAll()
-    .then(this.correctThumbnailAndAuthor)
-    .then( books => this.setState({ allBooks: books }))
+      .then(this.correctThumbnailAndAuthor)
+      .then(books => this.setState({allBooks: books}))
   }
 
   handleSearchTextChange = (searchText) => {
     this.setState({query: searchText})
+    if (!searchText) return
     this.showSearchResults(searchText)
   }
 
   showSearchResults = (searchText) => {
     BooksAPI.search(searchText)
-    .then(this.correctThumbnailAndAuthor)
-    .then(this.addShelfPropToExistedBooks)
-    .then( results => this.setState({allSearchResults: results}) )
-    .catch( () => this.setState({allSearchResults: []}) )
+      .then(this.correctThumbnailAndAuthor)
+      .then(this.addShelfPropToExistedBooks)
+      .then(results => this.setState({allSearchResults: results}))
+      .catch(() => this.setState({allSearchResults: []}))
   }
 
   changeShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then(() => this.showAllBooks())
   }
 
-  correctThumbnailAndAuthor = (books) => {
+  correctThumbnailAndAuthor = (data) => {
     return new Promise(resolve => {
-      books.map(book => {
+      data.forEach(book => {
         if (!book.imageLinks) {
           book.imageLinks = []
           book.imageLinks.thumbnail = ''
@@ -49,30 +50,27 @@ class BooksApp extends React.Component {
         if (!book.authors) {
           book.authors = []
         }
-        return books
       })
-      resolve(books)
+      resolve(data)
     })
   }
 
-  addShelfPropToExistedBooks = (results) => {
+  addShelfPropToExistedBooks = (data) => {
     const booksInShelf = this.state.allBooks
-    return new Promise( (resolve, reject) => {
-      if (results.length > 0) {
-        results.forEach( result => {
-          booksInShelf.forEach( book => {
+    return new Promise((resolve) => {
+      if (data.length > 0) {
+        data.forEach(result => {
+          booksInShelf.forEach(book => {
             (book.id === result.id) && (result.shelf = book.shelf)
           })
         })
-        resolve(results)
+        resolve(data)
       }
-      this.setState({allSearchResults: []})
-      reject()
     })
   }
 
   render() {
-    return(
+    return (
       <div>
         <Route exact path='/' render={() => (
             <ListBooks
@@ -81,17 +79,17 @@ class BooksApp extends React.Component {
               />
           )}/>
 
-          <Route path='/search' render={() => (
-              <SearchBooks
-                books={this.state.allSearchResults}
-                handleShelfChange={this.changeShelf}
-                searchText={this.state.query}
-                onSearchTextChange={this.handleSearchTextChange}
-                />
-            )}/>
-          </div>
-        )
-      }
-    }
+        <Route path='/search' render={() => (
+            <SearchBooks
+              books={this.state.allSearchResults}
+              handleShelfChange={this.changeShelf}
+              searchText={this.state.query}
+              onSearchTextChange={this.handleSearchTextChange}
+              />
+          )}/>
+      </div>
+    )
+  }
+}
 
-    export default BooksApp
+export default BooksApp
