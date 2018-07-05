@@ -34,7 +34,7 @@ class SearchBooks extends React.Component {
         )}
 
         {searchText && (
-          <BooksGrid books={books} onShelfChange={handleShelfChange}/>
+          <BooksGrid books={books} onShelfChange={handleShelfChange} currentPage='search'/>
         )}
       </div>
     </div>)

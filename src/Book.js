@@ -13,10 +13,13 @@ class Book extends React.Component {
   }
 
   render() {
-    const { title, authors, cover, shelf } = this.props
-    
+    const { title, authors, cover, shelf, currentPage } = this.props
+
     return (
       <li>
+        {(shelf && currentPage === 'search') && (
+          <span>In bookshelf: {shelf}</span>
+        )}
         <div className="book">
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${cover})` }}></div>

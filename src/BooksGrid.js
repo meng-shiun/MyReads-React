@@ -2,9 +2,11 @@ import React from 'react'
 import Book from './Book'
 
 const BooksGrid = (props) => {
+  const { books, onShelfChange, currentPage } = props
+
   return (
     <ol className='books-grid'>
-      {props.books.map(book => (
+      {books.map(book => (
         <Book
           key={book.id}
           id={book.id}
@@ -12,7 +14,8 @@ const BooksGrid = (props) => {
           authors={book.authors}
           cover={book.imageLinks.thumbnail}
           shelf={book.shelf}
-          onShelfChange={props.onShelfChange}
+          onShelfChange={onShelfChange}
+          currentPage={currentPage}
           />
       ))}
     </ol>
