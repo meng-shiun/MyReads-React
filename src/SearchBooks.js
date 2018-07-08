@@ -84,7 +84,11 @@ class SearchBooks extends React.Component {
         )}
 
         {query && (
-          <BooksGrid books={this.state.allSearchResults} onShelfChange={handleShelfChange} currentPage='search'/>
+          <BooksGrid
+            books={this.state.allSearchResults}
+            onShelfChange={handleShelfChange}
+            currentPage='search'
+            />
         )}
       </div>
     </div>)

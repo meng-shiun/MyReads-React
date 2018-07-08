@@ -2,6 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class Book extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {shelfVal: props.shelf || 'none'}
+  }
+
   static propTypes = {
     title: PropTypes.string.isRequired,
     cover: PropTypes.string.isRequired,
@@ -9,7 +14,10 @@ class Book extends React.Component {
   }
 
   handleChange = (e) => {
+    // Update book category to data
     this.props.onShelfChange(this.props, e.target.value)
+    // Update selected value visually
+    this.setState({shelfVal: e.target.value})
   }
 
   render() {
@@ -24,7 +32,7 @@ class Book extends React.Component {
           <div className="book-top">
             <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${cover})` }}></div>
             <div className="book-shelf-changer">
-              <select onChange={this.handleChange} value={shelf||'none'}>
+              <select onChange={this.handleChange} value={this.state.shelfVal}>
                 <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
