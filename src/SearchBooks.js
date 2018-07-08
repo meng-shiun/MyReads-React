@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
+import * as ModifyBookAPI from './ModifyBookAPI'
 import BooksGrid from './BooksGrid'
 
 class SearchBooks extends React.Component {
@@ -12,43 +13,14 @@ class SearchBooks extends React.Component {
 
   showSearchResults = (searchText) => {
     BooksAPI.search(searchText)
-      .then(this.correctThumbnailAndAuthor)
-      .then(this.addShelfPropToExistedBooks)
+      .then(ModifyBookAPI.correctThumbnailAndAuthor)
+      .then(data => ModifyBookAPI.addShelfPropToExistedBooks(data, this.props.books))
       .then(results => {
         results.length > 0
         ? this.setState({allSearchResults: results})
         : this.setState({allSearchResults: []})
       })
       .catch(() => this.setState({allSearchResults: []}))
-  }
-
-  correctThumbnailAndAuthor = (data) => {
-    return new Promise(resolve => {
-      data.forEach(book => {
-        if (!book.imageLinks) {
-          book.imageLinks = []
-          book.imageLinks.thumbnail = ''
-        }
-        if (!book.authors) {
-          book.authors = []
-        }
-      })
-      resolve(data)
-    })
-  }
-
-  addShelfPropToExistedBooks = (data) => {
-    const booksInShelf = this.props.books
-    return new Promise((resolve) => {
-      if (data.length > 0) {
-        data.forEach(result => {
-          booksInShelf.forEach(book => {
-            (book.id === result.id) && (result.shelf = book.shelf)
-          })
-        })
-        resolve(data)
-      }
-    })
   }
 
   handleChange = (e) => {
