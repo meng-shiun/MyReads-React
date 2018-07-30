@@ -46,7 +46,7 @@ const ListBooks = (props) => {
             />
           </div>
           <div className='open-search'>
-            <Link to='/search' onClick={onVisitSearchPage}>Add a book</Link>
+            <Link to='/MyReads-React/search' onClick={onVisitSearchPage}>Add a book</Link>
           </div>
         </div>
       </div>
