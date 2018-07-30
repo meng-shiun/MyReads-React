@@ -11,6 +11,8 @@ On main page, users can move books between bookshelves.
 * `clone` this repo
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
+* localhost - http://localhost:3000/MyReads-React/
+* [live](https://meng-shiun.github.io/MyReads-React/)
 
 ## Resources
 
